@@ -79,11 +79,13 @@ export const FilterableProductTable = ({ mockDataBase }: ProductTableProps) => {
   useEffect(() => {
     if (inputFromUser) {
       handleChange(inputFromUser);
-      return;
     }
+  }, [handleChange, inputFromUser]);
+
+  useEffect(() => {
     setIsSportingsGoods();
     setIsElectronics();
-  }, [handleChange, inputFromUser, setIsElectronics, setIsSportingsGoods]);
+  }, [setIsElectronics, setIsSportingsGoods]);
 
   return (
     <Container>

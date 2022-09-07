@@ -13,16 +13,12 @@ export interface ProductTableProps {
   data: ProductTableType[];
 }
 
-export const ProductRow = ({ data }: ProductTableProps) => {
-  return (
-    <ListContainer>
-      {data.map((data) => (
-        <>
-          <li key={data.name}>
-            {data.name} {data.price}
-          </li>
-        </>
-      ))}
-    </ListContainer>
-  );
-};
+export const ProductRow = ({ data }: ProductTableProps) => (
+  <ListContainer>
+    {data.map((data) => (
+      <li key={data.name}>
+        {data.name} {data.price}
+      </li>
+    ))}
+  </ListContainer>
+);
