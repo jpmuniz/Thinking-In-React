@@ -15,7 +15,7 @@ export interface ProductTableType {
 export const FilterableProductTable = () => {
   const {
     handleChangeInputText,
-    handleChangeProductInStock,
+    handleChangeShowProductInStock,
     electronicsValue,
     sportingsGoodsValue,
   } = useProductTable();
@@ -24,7 +24,7 @@ export const FilterableProductTable = () => {
     <Container>
       <SearchBar
         onchangeInputText={(value) => handleChangeInputText(value)}
-        onchangeCheckBox={() => handleChangeProductInStock()}
+        onchangeCheckBox={() => handleChangeShowProductInStock()}
       />
       <ProductTable
         electronics={electronicsValue}

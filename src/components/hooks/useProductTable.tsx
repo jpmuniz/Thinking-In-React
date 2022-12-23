@@ -13,73 +13,58 @@ const useProductTable = () => {
 
   const handleChangeInputText = (value: string) => setInputFromUser(value);
 
-  const handleChangeProductInStock = () =>
+  const handleChangeShowProductInStock = () =>
     setOnlyProductInStock(!onlyProductInStock);
 
-  const handleChange = useCallback(
+  const manageProductTable = useCallback(
     (inputFromUser: string) => {
-      const response = mockDataBase.filter(
-        (data) => data.name.indexOf(inputFromUser) !== -1
-      );
-      setSportingsGoodsValue(
-        response.filter((data) => data.category === IS_SPORTING_GOODS)
-      );
-      setElectronicsValue(
-        response.filter((data) => data.category === IS_ELECTRONICS)
-      );
-      if (onlyProductInStock) {
-        setSportingsGoodsValue(
-          sportingsGoodsValue.filter(
-            (data) => data.stocked === onlyProductInStock
-          )
-        );
-        setElectronicsValue(
-          electronicsValue.filter((data) => data.stocked === onlyProductInStock)
-        );
-      }
+      const responseFilterData = filterInputByUser(inputFromUser);
+      checkIfSportingsGoodsExistis(responseFilterData);
+      checkIfElectronicsExistis(responseFilterData);
+      hasProductInStock();
     },
     [electronicsValue, onlyProductInStock, sportingsGoodsValue]
   );
 
-  const setIsSportingsGoods = useCallback(() => {
-    const response = mockDataBase.filter(
-      (data) => data.category === IS_SPORTING_GOODS
-    );
+  const hasProductInStock = () => {
     if (onlyProductInStock) {
-      setSportingsGoodsValue(
-        response.filter((data) => data.stocked === onlyProductInStock)
-      );
-      return;
+      hasSportingsGoodsInStock();
+      hasElectronicsInStock();
     }
+  };
 
-    setSportingsGoodsValue(response);
-  }, [onlyProductInStock]);
+  const filterInputByUser = (inputFromUser: string) =>
+    mockDataBase.filter((data) => data.name.indexOf(inputFromUser) !== -1);
 
-  const setIsElectronics = useCallback(() => {
-    const response = mockDataBase.filter(
-      (data) => data.category === IS_ELECTRONICS
+  const checkIfSportingsGoodsExistis = (responseFilterData: any) =>
+    setSportingsGoodsValue(
+      responseFilterData.filter(
+        (data: any) => data.category === IS_SPORTING_GOODS
+      )
     );
-    if (onlyProductInStock) {
-      setElectronicsValue(
-        response.filter((data) => data.stocked === onlyProductInStock)
-      );
-      return;
-    }
-    setElectronicsValue(response);
-  }, [onlyProductInStock]);
+
+  const hasSportingsGoodsInStock = () =>
+    setSportingsGoodsValue(
+      sportingsGoodsValue.filter((data) => data.stocked === onlyProductInStock)
+    );
+
+  const checkIfElectronicsExistis = (responseFilterData: any) =>
+    setElectronicsValue(
+      responseFilterData.filter((data: any) => data.category === IS_ELECTRONICS)
+    );
+
+  const hasElectronicsInStock = () =>
+    setElectronicsValue(
+      electronicsValue.filter((data) => data.stocked === onlyProductInStock)
+    );
 
   useEffect(() => {
-    handleChange(inputFromUser);
-  }, [handleChange, inputFromUser]);
-
-  useEffect(() => {
-    setIsSportingsGoods();
-    setIsElectronics();
-  }, [setIsElectronics, setIsSportingsGoods]);
+    manageProductTable(inputFromUser);
+  }, [manageProductTable, inputFromUser]);
 
   return {
     handleChangeInputText,
-    handleChangeProductInStock,
+    handleChangeShowProductInStock,
     electronicsValue,
     sportingsGoodsValue,
   };
